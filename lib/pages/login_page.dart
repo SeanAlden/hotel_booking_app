@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase_project/pages/forgot_password_page.dart';
-import 'package:flutter_firebase_project/pages/home_page.dart';
 import 'package:flutter_firebase_project/pages/register_page.dart';
 import 'package:flutter_firebase_project/services/check_auth.dart';
 
