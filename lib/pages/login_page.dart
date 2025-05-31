@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_project/pages/forgot_password_page.dart';
+import 'package:flutter_firebase_project/pages/home_page.dart';
 import 'package:flutter_firebase_project/pages/register_page.dart';
 import 'package:flutter_firebase_project/services/check_auth.dart';
 
@@ -16,12 +18,36 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // void login() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     try {
+  //       await _auth.signInWithEmailAndPassword(
+  //           email: emailController.text.trim(),
+  //           password: passwordController.text.trim());
+
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("Login berhasil!")),
+  //       );
+
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => const CheckAuth()),
+  //       );
+  //     } catch (e) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("Login gagal: ${e.toString()}")),
+  //       );
+  //     }
+  //   }
+  // }
+
   void login() async {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth.signInWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim());
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Login berhasil!")),
@@ -31,9 +57,21 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(builder: (_) => const CheckAuth()),
         );
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+
+        if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+          errorMessage = "Email atau Password Anda salah";
+        } else {
+          errorMessage = "Login gagal: ${e.message}";
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login gagal: ${e.toString()}")),
+          SnackBar(content: Text("Terjadi kesalahan: ${e.toString()}")),
         );
       }
     }
@@ -135,9 +173,18 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           // Implement password reset functionality here if needed
                         },
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Colors.blue),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgotPasswordPage()));
+                          },
+                          child: const Text(
+                            "Forgot Password?",
+                            style: TextStyle(color: Colors.blue),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),

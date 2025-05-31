@@ -27,9 +27,9 @@ if (flutterVersionName == null) {
 }
 
 android {
+    compileSdkVersion 35
     namespace = "com.example.flutter_firebase_project"
     compileSdk = flutter.compileSdkVersion
-    // compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
