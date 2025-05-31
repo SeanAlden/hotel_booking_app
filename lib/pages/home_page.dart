@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
       //     ),
       //   ],
       // ),
-       appBar: AppBar(
+      appBar: AppBar(
         title: const Text(
           'Home',
           style: TextStyle(
