@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_project/pages/hotel_search_page.dart';
 import 'package:flutter_firebase_project/pages/location_search_page.dart';
+import 'package:flutter_firebase_project/pages/login_page.dart';
 
 class GuestHomePage extends StatefulWidget {
   const GuestHomePage({super.key});
@@ -42,7 +43,7 @@ class _GuestHomePageState extends State<GuestHomePage> {
             title: "Hotels",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => HotelSearchPage()),
+              MaterialPageRoute(builder: (_) => LoginPage()),
             ),
           ),
           const SizedBox(height: 10),
@@ -51,13 +52,13 @@ class _GuestHomePageState extends State<GuestHomePage> {
             onToggleWishlist: _toggleWishlist,
           ),
           const SizedBox(height: 20),
-          _SectionHeader(
-            title: "Location",
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => LocationSearchPage())),
-          ),
-          const SizedBox(height: 10),
-          const _LocationListView(),
+          // _SectionHeader(
+          //   title: "Location",
+          //   onTap: () => Navigator.push(context,
+          //       MaterialPageRoute(builder: (_) => LoginPage())),
+          // ),
+          // const SizedBox(height: 10),
+          // const _LocationListView(),
         ],
       ),
     );
@@ -82,7 +83,7 @@ class _GreetingHeader extends StatelessWidget {
         const SizedBox(width: 10),
         const Expanded(
           child: Text(
-            'Hi, John Doe',
+            'Hi, Guest',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
@@ -289,54 +290,54 @@ class _HotelCard extends StatelessWidget {
   }
 }
 
-class _LocationListView extends StatelessWidget {
-  const _LocationListView();
+// class _LocationListView extends StatelessWidget {
+//   const _LocationListView();
 
-  @override
-  Widget build(BuildContext context) {
-    final locations = ["Surabaya", "Jakarta", "Malang", "Yogyakarta"];
+//   @override
+//   Widget build(BuildContext context) {
+//     final locations = ["Surabaya", "Jakarta", "Malang", "Yogyakarta"];
 
-    return SizedBox(
-      height: 120,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: locations.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (_, index) {
-          return _LocationCard(name: locations[index]);
-        },
-      ),
-    );
-  }
-}
+//     return SizedBox(
+//       height: 120,
+//       child: ListView.separated(
+//         scrollDirection: Axis.horizontal,
+//         itemCount: locations.length,
+//         separatorBuilder: (_, __) => const SizedBox(width: 12),
+//         itemBuilder: (_, index) {
+//           return _LocationCard(name: locations[index]);
+//         },
+//       ),
+//     );
+//   }
+// }
 
-class _LocationCard extends StatelessWidget {
-  final String name;
+// class _LocationCard extends StatelessWidget {
+//   final String name;
 
-  const _LocationCard({required this.name});
+//   const _LocationCard({required this.name});
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      // onTap: () => Navigator.pushNamed(
-      //   context,
-      //   '/location-detail'
-      // ),
-      onTap: () => {},
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Container(
-          width: 120,
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.location_pin, color: Colors.red, size: 30),
-              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       // onTap: () => Navigator.pushNamed(
+//       //   context,
+//       //   '/location-detail'
+//       // ),
+//       onTap: () => {},
+//       child: Card(
+//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+//         child: Container(
+//           width: 120,
+//           padding: const EdgeInsets.all(10),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               const Icon(Icons.location_pin, color: Colors.red, size: 30),
+//               Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

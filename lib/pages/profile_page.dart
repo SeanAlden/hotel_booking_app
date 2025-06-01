@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void _loadUser() async {
     await FirebaseAuth.instance.currentUser!
         .reload(); // refresh data dari server
-    if (!mounted) ;
+    if (!mounted) 
     setState(() {
       user = FirebaseAuth.instance.currentUser; // ambil user terbaru
     });

@@ -60,6 +60,7 @@ flutter:
   assets: 
       - assets/images/profile.png
       - assets/images/product.png
+      - assets/icons/flutter_splash_screen_icon.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -10,6 +10,8 @@ class ChangePasswordPage extends StatefulWidget {
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -21,7 +23,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
       try {
         User? user = FirebaseAuth.instance.currentUser;
-        await user?.updatePassword(_newPasswordController.text);
+
+        // Re-authentication step
+        final cred = EmailAuthProvider.credential(
+          email: user!.email!,
+          password: _currentPasswordController.text,
+        );
+
+        await user.reauthenticateWithCredential(cred);
+
+        // Change password
+        await user.updatePassword(_newPasswordController.text);
         await FirebaseAuth.instance.signOut();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -43,6 +55,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   void dispose() {
+    _currentPasswordController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -64,11 +77,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Ubah Password',
+          'Change Password',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -80,28 +93,44 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
                       TextFormField(
-                        controller: _newPasswordController,
+                        controller: _currentPasswordController,
+              
                         obscureText: true,
-                        decoration: _inputDecoration('Password Baru'),
+                        decoration: _inputDecoration('Current Password'),
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value.length < 6) {
-                            return 'Password minimal 6 karakter';
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your current password';
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _newPasswordController,
+                        obscureText: true,
+                        decoration: _inputDecoration('New Password'),
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length < 6) {
+                            return 'Password at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _confirmPasswordController,
                         obscureText: true,
-                        decoration: _inputDecoration('Konfirmasi Password'),
+                        decoration:
+                            _inputDecoration('New Password Confirm'),
                         validator: (value) {
                           if (value != _newPasswordController.text) {
-                            return 'Password tidak cocok';
+                            return 'Password not match';
                           }
                           return null;
                         },
@@ -118,7 +147,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           textStyle: const TextStyle(fontSize: 16),
                         ),
                         child: const Text(
-                          'Simpan Password',
+                          'Save Changes',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
